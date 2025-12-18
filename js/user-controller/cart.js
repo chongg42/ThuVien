@@ -228,3 +228,44 @@ function updateCartBadge() {
         }
     }
 }
+
+// 8. Kiểm tra và xóa sách đã mượn khỏi giỏ hàng (Dùng cho Realtime Sync)
+function checkAndClearCart(db) {
+    const userId = getCurrentUserId();
+    const cartIds = getCartItems();
+
+    if (cartIds.length === 0) return;
+
+    // Lọc ra các sách trong giỏ mà user này đang mượn (hoặc đã trả)
+    // Logic: Nếu sách ID X có trong bảng muonTra của user này, nghĩa là đã mượn rồi -> Xóa khỏi giỏ
+    const userLoans = db.muonTra.filter(m => m.docGiaId === userId);
+
+    let hasChanges = false;
+    let newCart = [...cartIds];
+
+    cartIds.forEach(bookId => {
+        // Kiểm tra xem sách này có trong lịch sử mượn của user không (chỉ tính các phiếu mới tạo gần đây hoặc đang mượn)
+        // Đơn giản nhất: Nếu sách đang ở trạng thái "Đang mượn" bởi user này -> Xóa
+        const isBorrowed = userLoans.some(m => m.sachId === bookId && m.trangThai === "Đang mượn");
+
+        if (isBorrowed) {
+            newCart = newCart.filter(id => id !== bookId);
+            hasChanges = true;
+        }
+    });
+
+    if (hasChanges) {
+        localStorage.setItem('libra_cart', JSON.stringify(newCart));
+        updateCartBadge();
+
+        // Nếu đang mở giỏ hàng thì render lại
+        if (window.currentUserModule === 'cart') {
+            renderCart();
+            // Nếu đang mở modal QR thì đóng lại vì danh sách đã thay đổi
+            if (document.getElementById('qrTicketModal')) {
+                closeQRTicket();
+                alert("✅ Các sách bạn chọn đã được xác nhận mượn thành công!");
+            }
+        }
+    }
+}

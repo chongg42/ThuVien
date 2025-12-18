@@ -196,6 +196,11 @@
                     if (typeof updateCartBadge === 'function') {
                         updateCartBadge();
                     }
+
+                    // Kiểm tra và xóa sách đã mượn khỏi giỏ
+                    if (typeof checkAndClearCart === 'function') {
+                        checkAndClearCart(newData);
+                    }
                 });
             }
         };
