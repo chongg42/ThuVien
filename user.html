@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>LibModern - Độc giả</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card-user { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-user:hover { transform: scale(1.05); box-shadow: 0 20px 30px -10px rgba(50, 205, 50, 0.3); }
+        .bg-user-gradient { background: linear-gradient(120deg, #e0f7fa 0%, #e8f5e9 100%); }
+        .btn-borrow { background: linear-gradient(90deg, #32CD32, #2ecc71); }
+    </style>
+</head>
+<body class="bg-user-gradient min-h-screen text-slate-800">
+    <nav class="bg-white/70 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex justify-between items-center border-b border-green-100">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-green-200">L</div>
+            <h2 class="text-2xl font-black text-green-600 tracking-tight">LIB.USER</h2>
+        </div>
+        <div class="flex items-center gap-4 bg-white p-2 rounded-2xl shadow-sm border border-green-50">
+            <span class="pl-3 font-semibold text-sm">Nguyễn Văn An</span>
+            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">👤</div>
+            <a href="index.html" class="bg-red-500 text-white p-2 rounded-xl text-xs font-bold">Thoát</a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-8">
+        <div class="bg-white rounded-[3rem] p-10 mb-12 shadow-xl shadow-green-100/50 flex flex-col md:flex-row items-center justify-between border border-green-50">
+            <div>
+                <h1 class="text-4xl font-black text-slate-900 mb-4">Chào buổi sáng, An! 📚</h1>
+                <p class="text-slate-500 text-lg">Hôm nay bạn muốn "nhâm nhi" kiến thức nào?</p>
+            </div>
+            <div class="flex gap-4 mt-6 md:mt-0">
+                <div class="bg-orange-50 p-4 rounded-3xl text-center border border-orange-100">
+                    <p class="text-2xl">🎟️</p>
+                    <p class="font-bold text-orange-600">Vé của tôi</p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-3xl text-center border border-blue-100">
+                    <p class="text-2xl">🛒</p>
+                    <p class="font-bold text-blue-600">Giỏ sách</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-8 px-4 flex items-center gap-3">✨ Sách mới cập nhật</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="bookGrid">
+            </div>
+    </main>
+<script src="data.js"></script>
+<script>
+    const db = getLibData();
+    const session = JSON.parse(localStorage.getItem('session'));
+    
+    // Hiển thị tên người dùng từ session
+    document.querySelector('h1').innerText = `Chào buổi sáng, ${session.hoTen || 'Bạn'}! 📚`;
+
+    // Render sách từ dữ liệu dùng chung
+    document.getElementById('bookGrid').innerHTML = db.sach.map(s => `
+        <div class="bg-white rounded-[2.5rem] p-6 border border-slate-50 shadow-sm">
+            <div class="bg-indigo-50 h-40 rounded-[2rem] mb-4 flex items-center justify-center text-4xl">📖</div>
+            <h3 class="font-bold text-lg">${s.tieuDe}</h3>
+            <p class="text-slate-400 text-sm mb-4">${s.tacGia}</p>
+            <button class="w-full py-3 bg-green-500 text-white rounded-xl font-bold">MƯỢN NGAY</button>
+        </div>
+    `).join('');
+</script>
+</body>
+</html>
