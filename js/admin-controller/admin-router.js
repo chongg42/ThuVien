@@ -1,4 +1,5 @@
 function loadModule(moduleName, element) {
+  window.currentModule = moduleName; // Lưu module hiện tại để reload khi cần
   document
     .querySelectorAll(".nav-item")
     .forEach((item) => item.classList.remove("active"));
@@ -12,7 +13,7 @@ function loadModule(moduleName, element) {
     case "dashboard":
       title.innerText = "Tổng Quan Hệ Thống";
       if (typeof renderDashboard === "function")
-        content.innerHTML = renderDashboard(db);
+        renderDashboard(db);
       break;
     case "books":
       title.innerText = "Quản Lý Kho Sách";
@@ -36,14 +37,18 @@ function loadModule(moduleName, element) {
       title.innerText = "Lịch Sử Hoạt Động";
       renderActivityLog();
       break;
-      case 'settings':
-    title.innerText = "Cấu Hình Tài Khoản";
-    renderSettingsModule();
-    break;
+    case 'settings':
+      title.innerText = "Cấu Hình Tài Khoản";
+      renderSettingsModule();
+      break;
     case 'backup':
-    title.innerText = "Quản Lý Dữ Liệu";
-    renderBackupRestoreModule();
-    break;
+      title.innerText = "Quản Lý Dữ Liệu";
+      renderBackupRestoreModule();
+      break;
+    case 'muontra':
+      title.innerText = "Quản Lý Giao Dịch";
+      renderLoanModule();
+      break;
     default:
       content.innerHTML = `<div class="p-20 bg-white/50 backdrop-blur-md rounded-[3rem] text-center border border-white">
                 <div class="text-6xl mb-6">🛠️</div>

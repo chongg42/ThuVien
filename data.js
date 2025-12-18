@@ -506,60 +506,70 @@ if (typeof window.libInitialData === "undefined") {
         hoTen: "Nguyễn Văn An",
         email: "an@gmail.com",
         dienThoai: "0901234561",
+        matKhau: "123",
       },
       {
         id: 2,
         hoTen: "Trần Hoài Nam",
         email: "nam@gmail.com",
         dienThoai: "0901234562",
+        matKhau: "123",
       },
       {
         id: 3,
         hoTen: "Lê Minh Hòa",
         email: "hoa@gmail.com",
         dienThoai: "0901234563",
+        matKhau: "123",
       },
       {
         id: 4,
         hoTen: "Phạm Quốc Khánh",
         email: "khanh@gmail.com",
         dienThoai: "0901234564",
+        matKhau: "123",
       },
       {
         id: 5,
         hoTen: "Nguyễn Thị Hương",
         email: "huong@gmail.com",
         dienThoai: "0901234565",
+        matKhau: "123",
       },
       {
         id: 6,
         hoTen: "Đặng Trọng Phú",
         email: "phu@gmail.com",
         dienThoai: "0901234566",
+        matKhau: "123",
       },
       {
         id: 7,
         hoTen: "Lê Thanh Sơn",
         email: "son@gmail.com",
         dienThoai: "0901234567",
+        matKhau: "123",
       },
       {
         id: 8,
         hoTen: "Trần Thị Hải",
         email: "hai@gmail.com",
         dienThoai: "0901234568",
+        matKhau: "123",
       },
       {
         id: 9,
         hoTen: "Hoàng Nhật Tân",
         email: "tan@gmail.com",
         dienThoai: "0901234569",
+        matKhau: "123",
       },
       {
         id: 10,
         hoTen: "Nguyễn Thanh Trúc",
         email: "truc@gmail.com",
         dienThoai: "0901234570",
+        matKhau: "123",
       },
 
       {
@@ -567,30 +577,35 @@ if (typeof window.libInitialData === "undefined") {
         hoTen: "Phạm Gia Huy",
         email: "huy@gmail.com",
         dienThoai: "0901234571",
+        matKhau: "123",
       },
       {
         id: 12,
         hoTen: "Nguyễn Minh Đức",
         email: "duc@gmail.com",
         dienThoai: "0901234572",
+        matKhau: "123",
       },
       {
         id: 13,
         hoTen: "Lê Đình Hiếu",
         email: "hieu@gmail.com",
         dienThoai: "0901234573",
+        matKhau: "123",
       },
       {
         id: 14,
         hoTen: "Hoàng Thu Trang",
         email: "thu@gmail.com",
         dienThoai: "0901234574",
+        matKhau: "123",
       },
       {
         id: 15,
         hoTen: "Nguyễn Quang Minh",
         email: "minh@gmail.com",
         dienThoai: "0901234575",
+        matKhau: "123",
       },
 
       {
@@ -598,30 +613,35 @@ if (typeof window.libInitialData === "undefined") {
         hoTen: "Phạm Thu Thảo",
         email: "thao@gmail.com",
         dienThoai: "0901234576",
+        matKhau: "123",
       },
       {
         id: 17,
         hoTen: "Lê Việt Anh",
         email: "anh@gmail.com",
         dienThoai: "0901234577",
+        matKhau: "123",
       },
       {
         id: 18,
         hoTen: "Đỗ Nhật Nam",
         email: "nhatnam@gmail.com",
         dienThoai: "0901234578",
+        matKhau: "123",
       },
       {
         id: 19,
         hoTen: "Lương Tiến Đạt",
         email: "dat@gmail.com",
         dienThoai: "0901234579",
+        matKhau: "123",
       },
       {
         id: 20,
         hoTen: "Phan Ngọc Dung",
         email: "dung@gmail.com",
         dienThoai: "0901234580",
+        matKhau: "123",
       },
 
       {
@@ -629,30 +649,35 @@ if (typeof window.libInitialData === "undefined") {
         hoTen: "Hoàng Kim Ngân",
         email: "ngan@gmail.com",
         dienThoai: "0901234581",
+        matKhau: "123",
       },
       {
         id: 22,
         hoTen: "Nguyễn Hữu Phước",
         email: "phuoc@gmail.com",
         dienThoai: "0901234582",
+        matKhau: "123",
       },
       {
         id: 23,
         hoTen: "Trần Minh Tâm",
         email: "tam@gmail.com",
         dienThoai: "0901234583",
+        matKhau: "123",
       },
       {
         id: 24,
         hoTen: "Lê Hải Yến",
         email: "yen@gmail.com",
         dienThoai: "0901234584",
+        matKhau: "123",
       },
       {
         id: 25,
         hoTen: "Phạm Đức Toàn",
         email: "toan@gmail.com",
         dienThoai: "0901234585",
+        matKhau: "123",
       },
     ],
     muonTra: [
@@ -764,32 +789,77 @@ function updateLibData(newData) {
 }
 // Thêm vào data.js nếu chưa có
 function saveLibData(db) {
-    localStorage.setItem('libraryDB', JSON.stringify(db));
+  localStorage.setItem('libraryDB', JSON.stringify(db));
 }
 // data.js - Thêm mảng nhatKy nếu chưa có
 if (typeof window.libInitialData.nhatKy === "undefined") {
-    window.libInitialData.nhatKy = [
-        { id: 1, thoiGian: "2024-12-18 09:00", nguoiDung: "Admin", hanhDong: "Thêm sách mới", chiTiet: "Đã thêm cuốn 'Lập trình Go'", loai: "success" },
-        { id: 2, thoiGian: "2024-12-18 10:15", nguoiDung: "Admin", hanhDong: "Gửi email trễ", chiTiet: "Gửi nhắc nhở đến 5 độc giả", loai: "warning" }
-    ];
+  window.libInitialData.nhatKy = [
+    { id: 1, thoiGian: "2024-12-18 09:00", nguoiDung: "Admin", hanhDong: "Thêm sách mới", chiTiet: "Đã thêm cuốn 'Lập trình Go'", loai: "success" },
+    { id: 2, thoiGian: "2024-12-18 10:15", nguoiDung: "Admin", hanhDong: "Gửi email trễ", chiTiet: "Gửi nhắc nhở đến 5 độc giả", loai: "warning" }
+  ];
+}
+
+// Hàm thiết lập đồng bộ thời gian thực
+function setupRealtimeSync(callback) {
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'libData') {
+      console.log("🔄 Phát hiện thay đổi dữ liệu từ tab khác. Đang cập nhật...");
+      if (typeof callback === 'function') {
+        callback(JSON.parse(event.newValue));
+      }
+    }
+  });
 }
 
 // Hàm ghi nhật ký (Dùng chung cho toàn hệ thống)
 function logActivity(hanhDong, chiTiet, loai = "info") {
-    const db = getLibData();
-    const now = new Date();
-    const timeStr = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}`;
-    
-    const newLog = {
-        id: Date.now(),
-        thoiGian: timeStr,
-        nguoiDung: "Quản trị viên",
-        hanhDong: hanhDong,
-        chiTiet: chiTiet,
-        loai: loai // success, warning, danger, info
-    };
-    
-    db.nhatKy.unshift(newLog); // Thêm vào đầu danh sách
-    if (db.nhatKy.length > 100) db.nhatKy.pop(); // Giới hạn 100 dòng gần nhất
-    updateLibData(db);
+  const db = getLibData();
+  const now = new Date();
+  const timeStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()} ${now.getHours()}:${now.getMinutes()}`;
+
+  // Fix lỗi nếu db.nhatKy chưa tồn tại
+  if (!db.nhatKy) db.nhatKy = [];
+
+  const newLog = {
+    id: Date.now(),
+    thoiGian: timeStr,
+    nguoiDung: "Quản trị viên",
+    hanhDong: hanhDong,
+    chiTiet: chiTiet,
+    loai: loai // success, warning, danger, info
+  };
+
+  db.nhatKy.unshift(newLog); // Thêm vào đầu danh sách
+  if (db.nhatKy.length > 100) db.nhatKy.pop(); // Giới hạn 100 dòng gần nhất
+  updateLibData(db);
 }
+
+// MIGRATION: Tự động thêm mật khẩu cho độc giả cũ nếu chưa có
+(function migrateData() {
+  try {
+    const db = getLibData();
+    let changed = false;
+
+    if (db.docGia) {
+      db.docGia.forEach(u => {
+        if (!u.matKhau) {
+          u.matKhau = "123";
+          changed = true;
+        }
+      });
+    }
+
+    // Fix lỗi thiếu mảng nhatKy gây crash
+    if (!db.nhatKy) {
+      db.nhatKy = window.libInitialData.nhatKy || [];
+      changed = true;
+    }
+
+    if (changed) {
+      console.log("Đã cập nhật dữ liệu (Mật khẩu/Nhật ký) cho hệ thống.");
+      updateLibData(db);
+    }
+  } catch (e) {
+    console.error("Lỗi migration:", e);
+  }
+})();

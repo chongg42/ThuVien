@@ -43,7 +43,7 @@ function renderUsersModule(page = 1) {
                                         <div class="flex items-center gap-5">
                                             <div class="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">👤</div>
                                             <div>
-                                                <p class="font-black text-slate-800 text-lg">${u.tenDocGia}</p>
+                                                <p class="font-black text-slate-800 text-lg">${u.hoTen}</p>
                                                 <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">${u.email || 'N/A'}</p>
                                             </div>
                                         </div>

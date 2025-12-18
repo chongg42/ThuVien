@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <title>LibModern - Welcome to Future Library</title>
@@ -8,7 +9,11 @@
     <script src="data.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow: hidden;
+        }
 
         .bg-portal {
             background: linear-gradient(135deg, #FFA500 0%, #FFD700 50%, #87CEFA 100%);
@@ -17,9 +22,17 @@
         }
 
         @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .glass-container {
@@ -34,8 +47,15 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0); }
-            50% { transform: translateY(-20px) rotate(10deg); }
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
         }
 
         .input-glow:focus {
@@ -43,18 +63,27 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-        #particles-js { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
+
 <body class="bg-portal h-screen flex items-center justify-center relative">
     <div id="particles-js"></div>
 
     <div class="absolute top-20 left-20 text-6xl floating-icon opacity-50 select-none">📚</div>
-    <div class="absolute bottom-20 right-40 text-6xl floating-icon opacity-50 select-none" style="animation-delay: 2s">✨</div>
-    <div class="absolute top-1/2 right-20 text-5xl floating-icon opacity-40 select-none" style="animation-delay: 1s">🔍</div>
+    <div class="absolute bottom-20 right-40 text-6xl floating-icon opacity-50 select-none" style="animation-delay: 2s">✨
+    </div>
+    <div class="absolute top-1/2 right-20 text-5xl floating-icon opacity-40 select-none" style="animation-delay: 1s">🔍
+    </div>
 
     <div class="relative z-10 container mx-auto flex flex-col lg:flex-row items-center justify-center gap-16 px-6">
-        
+
         <div class="text-white text-center lg:text-left lg:w-1/2" data-aos="fade-right">
             <h1 class="text-7xl lg:text-8xl font-black mb-6 tracking-tighter leading-none">
                 LIB<span class="text-slate-900">MODERN.</span>
@@ -69,21 +98,22 @@
         </div>
 
         <div class="glass-container p-10 lg:p-12 rounded-[3.5rem] w-full max-w-md transition-all duration-500">
-            
+
             <div id="loginSection">
                 <h2 class="text-3xl font-extrabold text-white mb-2">Chào mừng trở lại</h2>
                 <p class="text-white/70 mb-8 text-sm">Vui lòng nhập thông tin để truy cập thư viện</p>
-                
+
                 <div class="space-y-4">
                     <div class="relative">
-                        <input type="text" id="userInp" placeholder="Email / Username" 
+                        <input type="text" id="userInp" placeholder="Email / Username"
                             class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
                     </div>
                     <div class="relative">
-                        <input type="password" id="passInp" placeholder="Mật khẩu" 
+                        <input type="password" id="passInp" placeholder="Mật khẩu"
                             class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
                     </div>
-                    <button onclick="login()" class="w-full py-5 bg-slate-900 text-white font-extrabold rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 shadow-2xl">
+                    <button onclick="login()"
+                        class="w-full py-5 bg-slate-900 text-white font-extrabold rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 shadow-2xl">
                         ĐĂNG NHẬP
                     </button>
                     <div class="relative flex py-4 items-center">
@@ -91,7 +121,8 @@
                         <span class="flex-shrink mx-4 text-white/50 text-xs uppercase tracking-widest">Hoặc</span>
                         <div class="flex-grow border-t border-white/20"></div>
                     </div>
-                    <button onclick="toggleForm()" class="w-full py-4 bg-white/10 text-white font-bold rounded-2xl border border-white/30 hover:bg-white/20 transition-all">
+                    <button onclick="toggleForm()"
+                        class="w-full py-4 bg-white/10 text-white font-bold rounded-2xl border border-white/30 hover:bg-white/20 transition-all">
                         ĐĂNG KÝ TÀI KHOẢN
                     </button>
                 </div>
@@ -100,15 +131,16 @@
             <div id="regSection" class="hidden">
                 <h2 class="text-3xl font-extrabold text-white mb-2">Gia nhập cộng đồng</h2>
                 <p class="text-white/70 mb-8 text-sm">Chỉ mất 30 giây để bắt đầu hành trình</p>
-                
+
                 <div class="space-y-4">
-                    <input type="text" id="regName" placeholder="Họ và tên của bạn" 
+                    <input type="text" id="regName" placeholder="Họ và tên của bạn"
                         class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
-                    <input type="email" id="regEmail" placeholder="Địa chỉ Email" 
+                    <input type="email" id="regEmail" placeholder="Địa chỉ Email"
                         class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
-                    <input type="password" id="regPass" placeholder="Mật khẩu (tối thiểu 6 ký tự)" 
+                    <input type="password" id="regPass" placeholder="Mật khẩu (tối thiểu 6 ký tự)"
                         class="w-full p-5 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none input-glow transition-all">
-                    <button onclick="register()" class="w-full py-5 bg-green-500 text-white font-extrabold rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 shadow-2xl">
+                    <button onclick="register()"
+                        class="w-full py-5 bg-green-500 text-white font-extrabold rounded-2xl hover:scale-[1.02] transition-transform active:scale-95 shadow-2xl">
                         HOÀN TẤT ĐĂNG KÝ
                     </button>
                     <button onclick="toggleForm()" class="w-full text-center text-white/70 text-sm font-bold mt-4">
@@ -132,15 +164,15 @@
             const db = getLibData();
 
             const admin = db.admin.find(a => a.taiKhoan === u && a.matKhau === p);
-            if(admin) {
+            if (admin) {
                 localStorage.setItem('session', JSON.stringify(admin));
                 window.location.href = 'admin.html';
                 return;
             }
 
             const user = db.docGia.find(d => d.email === u && d.matKhau === p);
-            if(user) {
-                localStorage.setItem('session', JSON.stringify(user));
+            if (user) {
+                localStorage.setItem('libra_login', JSON.stringify(user));
                 window.location.href = 'user.html';
                 return;
             }
@@ -152,7 +184,7 @@
             const email = document.getElementById('regEmail').value;
             const pass = document.getElementById('regPass').value;
 
-            if(!name || !email || !pass) return alert("Vui lòng không để trống thông tin.");
+            if (!name || !email || !pass) return alert("Vui lòng không để trống thông tin.");
 
             let db = getLibData();
             const newUser = { id: Date.now(), hoTen: name, email: email, matKhau: pass };
@@ -174,4 +206,5 @@
         });
     </script>
 </body>
+
 </html>
