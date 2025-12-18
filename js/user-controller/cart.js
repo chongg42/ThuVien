@@ -246,7 +246,8 @@ function checkAndClearCart(db) {
     cartIds.forEach(bookId => {
         // Kiểm tra xem sách này có trong lịch sử mượn của user không (chỉ tính các phiếu mới tạo gần đây hoặc đang mượn)
         // Đơn giản nhất: Nếu sách đang ở trạng thái "Đang mượn" bởi user này -> Xóa
-        const isBorrowed = userLoans.some(m => m.sachId === bookId && m.trangThai === "Đang mượn");
+        // Note: Dùng == để so sánh lỏng (string vs number)
+        const isBorrowed = userLoans.some(m => m.sachId == bookId && m.trangThai === "Đang mượn");
 
         if (isBorrowed) {
             newCart = newCart.filter(id => id !== bookId);

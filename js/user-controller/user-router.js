@@ -31,7 +31,11 @@ function loadUserModule(moduleName, element) {
       break;
     case "history":
       title.innerText = "Lịch sử mượn trả";
-      renderUserHistory();
+      renderLoanHistory(); // Renamed from renderUserHistory
+      break;
+    case "tickets":
+      title.innerText = "Phiếu mượn đang kích hoạt";
+      renderLoanTickets();
       break;
     case "settings":
       title.innerText = "Cài đặt tài khoản";
