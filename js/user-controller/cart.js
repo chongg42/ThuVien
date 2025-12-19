@@ -308,7 +308,7 @@ function syncCartWithDatabase() {
   const db = getLibData();
   const userId = getCurrentUserId(); // Giả định bạn đã có hàm lấy ID user đang đăng nhập
   let cart = getCartItems();
-
+  checkAndClearCart(db);
   if (cart.length === 0) return;
 
   // Lấy danh sách ID sách mà User này ĐANG MƯỢN thực tế trong DB

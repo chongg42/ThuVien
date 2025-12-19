@@ -703,6 +703,7 @@ if (typeof window.libInitialData === "undefined") {
         sachId: 4,
         ngayMuon: "2024-01-10",
         hanTra: "2024-01-30",
+        ngayTraThucTe:"2024-02-13",
         trangThai: "Đã trả",
       },
       {
@@ -719,6 +720,7 @@ if (typeof window.libInitialData === "undefined") {
         sachId: 1,
         ngayMuon: "2024-01-15",
         hanTra: "2024-02-01",
+        ngayTraThucTe:"2024-02-13",
         trangThai: "Đã trả",
       },
     ],
