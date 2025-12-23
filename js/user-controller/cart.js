@@ -2,18 +2,23 @@
 
 // 1. Lấy danh sách ID sách từ localStorage
 function getCartItems() {
-  const cart = localStorage.getItem("libra_cart");
+  const userId = getCurrentUserId();
+  if (!userId) return [];
+  const cart = localStorage.getItem(`libra_cart_${userId}`);
   return cart ? JSON.parse(cart) : [];
 }
-
+function getCurrentUserId() {
+  const user = localStorage.getItem("libra_login");
+  return user ? JSON.parse(user).id : null;
+}
 // 2. Hàm Thêm vào giỏ (Dùng cho catalog.js gọi tới)
 function addToCart(bookId) {
   let cart = getCartItems();
-
+const userId = getCurrentUserId();
   // Kiểm tra xem sách đã có trong giỏ chưa
   if (!cart.includes(bookId)) {
     cart.push(bookId);
-    localStorage.setItem("libra_cart", JSON.stringify(cart));
+    localStorage.setItem(`libra_cart_${userId}`, JSON.stringify(cart));
 
     // Cập nhật số lượng hiển thị trên icon giỏ hàng (nếu có)
     updateCartBadge();
@@ -27,7 +32,7 @@ function addToCart(bookId) {
 function removeFromCart(bookId) {
   let cart = getCartItems();
   cart = cart.filter((id) => id !== bookId);
-  localStorage.setItem("libra_cart", JSON.stringify(cart));
+  localStorage.setItem(`libra_cart_${userId}`, JSON.stringify(cart));
 
   // Render lại giao diện giỏ hàng
   renderCart();
@@ -228,7 +233,7 @@ function closeQRTicket() {
 // 6. Hàm xóa toàn bộ giỏ
 function clearFullCart() {
   if (confirm("Bạn có chắc muốn xóa tất cả sách khỏi giỏ hàng?")) {
-    localStorage.removeItem("libra_cart");
+    localStorage.removeItem(`libra_cart_${userId}`);
     updateCartBadge();
     renderCart();
   }
@@ -288,7 +293,7 @@ function checkAndClearCart(db) {
   });
 
   if (hasChanges) {
-    localStorage.setItem("libra_cart", JSON.stringify(newCart));
+    localStorage.setItem(`libra_cart_${userId}`, JSON.stringify(newCart));
     updateCartBadge();
 
     // Nếu đang mở giỏ hàng thì render lại
@@ -324,7 +329,7 @@ function syncCartWithDatabase() {
 
   // Nếu có sự khác biệt về số lượng, nghĩa là có sách vừa được mượn thành công
   if (cart.length !== filteredCart.length) {
-    localStorage.setItem("libra_cart", JSON.stringify(filteredCart));
+    localStorage.setItem(`libra_cart_${userId}`, JSON.stringify(filteredCart));
     updateCartBadge();
     return true;
   }

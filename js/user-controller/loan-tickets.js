@@ -1,5 +1,4 @@
 // js/user-controller/loan-tickets.js
-
 // 1. Render Lịch sử mượn trả (Tất cả)
 function renderLoanHistory() {
     const db = getLibData();
@@ -27,7 +26,7 @@ function renderLoanHistory() {
             : 'bg-blue-50 text-blue-600 border-blue-100';
 
         return `
-                            <tr class="group hover:scale-[1.01] transition-transform duration-300">
+                            <tr class="group hover:scale-[1.01] transition-transform duration-300" onclick="showLoanDetail(${m.id})" style="cursor: pointer;">
                                 <td class="py-6 pl-8 bg-white border-y border-l border-slate-50 rounded-l-3xl font-bold text-slate-800 shadow-sm">${book?.tieuDe}</td>
                                 <td class="py-6 bg-white border-y border-slate-50 text-center font-medium text-slate-500 shadow-sm">${m.ngayMuon}</td>
                                 <td class="py-6 bg-white border-y border-slate-50 text-center font-medium text-slate-500 shadow-sm">${m.hanTra}</td>

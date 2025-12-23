@@ -224,43 +224,53 @@ function exportSystemReport() {
     const now = new Date();
     const dateStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
 
-    // 1. Prepare Data Rows
-    let csvContent = "data:text/csv;charset=utf-8,";
+    // 1. Prepare Data Rows (Không dùng tiền tố "data:text/csv..." ở đây nữa)
+    let csvContent = "";
 
     // Header Section
-    csvContent += `BAO CAO HE THONG THU VIEN - LIBMODERN\n`;
-    csvContent += `Ngay xuat: ${now.toLocaleString()}\n\n`;
+    csvContent += `BÁO CÁO HỆ THỐNG THƯ VIỆN - LIBMODERN\n`;
+    csvContent += `Ngày xuất: ${now.toLocaleString()}\n\n`;
 
     // Summary Section
-    csvContent += `TONG QUAN\n`;
-    csvContent += `Tong so sach,${db.sach.length}\n`;
-    csvContent += `Tong doc gia,${db.docGia.length}\n`;
-    csvContent += `Luot muon tra,${db.muonTra.length}\n`;
-    csvContent += `Sach qua han,${db.muonTra.filter(m => m.trangThai === "Đang mượn" && new Date(m.hanTra) < new Date()).length}\n\n`;
+    csvContent += `TỔNG QUAN\n`;
+    csvContent += `Tổng số sách,${db.sach.length}\n`;
+    csvContent += `Tổng độc giả,${db.docGia.length}\n`;
+    csvContent += `Lượt mượn trả,${db.muonTra.length}\n`;
+    csvContent += `Sách quá hạn,${db.muonTra.filter(m => m.trangThai === "Đang mượn" && new Date(m.hanTra) < new Date()).length}\n\n`;
 
-    // Book List Section
-    csvContent += `DANH SACH SACH MOI NHAP\n`;
-    csvContent += `ID,Tieu De,Tac Gia,Nam XB,So Luong\n`;
+    let dangMuon =db.muonTra.filter(m => m.trangThai === "Đang mượn").map(m => m.sachId);
+    csvContent += `Các sách đang được mượn:\n`; 
+    csvContent += `${db.sach.filter(s => dangMuon.includes(s.id)).map(m => m.tieuDe).join("\n")}\n\n`;
+
+    csvContent += `DANH SÁCH SÁCH MỚI NHẬP\n`;
+    csvContent += `ID,Tiêu Đề,Tác Giả,Năm XB,Số Lượng\n`;
     db.sach.slice(0, 10).forEach(s => {
         csvContent += `${s.id},"${s.tieuDe}","${s.tacGia}",${s.namXuatBan},${s.soLuong}\n`;
     });
     csvContent += `\n`;
 
     // Recent Logs Section
-    csvContent += `NHAT KY HOAT DONG GAN DAY\n`;
-    csvContent += `Thoi Gian,Nguoi Dung,Hanh Dong,Chi Tiet\n`;
+    csvContent += `NHẬT KÝ HOẠT ĐỘNG GẦN ĐÂY\n`;
+    csvContent += `Thời Gian,Người Dùng,Hành Động,Chi Tiết\n`;
     if (db.nhatKy) {
         db.nhatKy.forEach(log => {
             csvContent += `${log.thoiGian},"${log.nguoiDung}","${log.hanhDong}","${log.chiTiet}"\n`;
         });
     }
 
-    // 2. Encode and Download
-    const encodedUri = encodeURI(csvContent);
+    // 2. Sử dụng Blob với BOM để hỗ trợ Tiếng Việt (UTF-8)
+    // \uFEFF là "Byte Order Mark" giúp Excel nhận diện đúng font Tiếng Việt
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    link.setAttribute("href", url);
     link.setAttribute("download", `BaoCao_HeThong_${dateStr}.csv`);
-    document.body.appendChild(link); // Required for FF
+    document.body.appendChild(link);
+    
     link.click();
+    
+    // Dọn dẹp
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
 }

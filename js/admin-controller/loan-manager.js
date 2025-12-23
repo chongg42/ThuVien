@@ -3,28 +3,29 @@ let currentSearchUser = "";
 let currentStatusFilter = "all";
 
 function renderLoanModule(page = 1) {
-    const db = getLibData();
-    
-    // 1. LOGIC LỌC DỮ LIỆU (Cần thực hiện TRƯỚC khi phân trang)
-    let filteredLoans = db.muonTra.filter(m => {
-        // Lọc theo tên độc giả
-        const user = db.docGia.find(u => u.id === m.docGiaId);
-        const userName = (user?.hoTen || "").toLowerCase();
-        const matchSearch = userName.includes(currentSearchUser.toLowerCase());
+  const db = getLibData();
 
-        // Lọc theo trạng thái
-        const matchStatus = currentStatusFilter === "all" || m.trangThai === currentStatusFilter;
+  // 1. LOGIC LỌC DỮ LIỆU (Cần thực hiện TRƯỚC khi phân trang)
+  let filteredLoans = db.muonTra.filter((m) => {
+    // Lọc theo tên độc giả
+    const user = db.docGia.find((u) => u.id === m.docGiaId);
+    const userName = (user?.hoTen || "").toLowerCase();
+    const matchSearch = userName.includes(currentSearchUser.toLowerCase());
 
-        return matchSearch && matchStatus;
-    });
+    // Lọc theo trạng thái
+    const matchStatus =
+      currentStatusFilter === "all" || m.trangThai === currentStatusFilter;
 
-    // 2. LOGIC PHÂN TRANG (Dựa trên danh sách đã lọc)
-    const itemsPerPage = 6;
-    const totalPages = Math.ceil(filteredLoans.length / itemsPerPage) || 1;
-    const start = (page - 1) * itemsPerPage;
-    const paginatedLoans = filteredLoans.slice(start, start + itemsPerPage);
+    return matchSearch && matchStatus;
+  });
 
-    let html = `
+  // 2. LOGIC PHÂN TRANG (Dựa trên danh sách đã lọc)
+  const itemsPerPage = 6;
+  const totalPages = Math.ceil(filteredLoans.length / itemsPerPage) || 1;
+  const start = (page - 1) * itemsPerPage;
+  const paginatedLoans = filteredLoans.slice(start, start + itemsPerPage);
+
+  let html = `
         <div class="bg-white/70 backdrop-blur-2xl rounded-[4rem] p-10 shadow-xl border border-white/50 animate-in fade-in duration-700">
             <div class="flex flex-col md:flex-row justify-between items-start mb-8 gap-6">
                 <div>
@@ -41,18 +42,28 @@ function renderLoanModule(page = 1) {
                             class="pl-10 pr-12 py-3 bg-white border border-slate-100 rounded-2xl text-xs font-bold focus:ring-2 focus:ring-blue-500 outline-none w-64 transition-all shadow-sm">
                         <button class="absolute left-4 top-3.5 text-slate-400" onclick="handleLoanSearch()">🔍</button>
                         
-                        ${currentSearchUser ? `
+                        ${
+                          currentSearchUser
+                            ? `
                             <button onclick="clearSearchLoan()" 
                                 class="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-xl bg-slate-100 hover:bg-rose-500 hover:text-white flex items-center justify-center transition-all text-[10px]"
                             >✕</button>
-                        ` : ""}
+                        `
+                            : ""
+                        }
                     </div>
 
                     <select id="filterStatusLoan" onchange="handleLoanFilter(this.value)" 
                         class="px-4 py-3 bg-white border border-slate-100 rounded-2xl text-xs font-bold outline-none shadow-sm cursor-pointer">
-                        <option value="all" ${currentStatusFilter === "all" ? "selected" : ""}>Tất cả trạng thái</option>
-                        <option value="Đang mượn" ${currentStatusFilter === "Đang mượn" ? "selected" : ""}>Đang mượn</option>
-                        <option value="Đã trả" ${currentStatusFilter === "Đã trả" ? "selected" : ""}>Đã trả</option>
+                        <option value="all" ${
+                          currentStatusFilter === "all" ? "selected" : ""
+                        }>Tất cả trạng thái</option>
+                        <option value="Đang mượn" ${
+                          currentStatusFilter === "Đang mượn" ? "selected" : ""
+                        }>Đang mượn</option>
+                        <option value="Đã trả" ${
+                          currentStatusFilter === "Đã trả" ? "selected" : ""
+                        }>Đã trả</option>
                     </select>
 
                     <button onclick="showAddLoanModal()" class="bg-slate-900 text-white px-6 py-3 rounded-2xl font-black shadow-lg hover:bg-blue-600 transition-all uppercase text-[10px]">
@@ -73,42 +84,78 @@ function renderLoanModule(page = 1) {
                         </tr>
                     </thead>
                     <tbody>
-                        ${paginatedLoans.length > 0 ? paginatedLoans.map((m) => {
-                            const user = db.docGia.find(u => u.id === m.docGiaId);
-                            const book = db.sach.find(s => s.id === m.sachId);
-                            const isOverdue = new Date(m.hanTra) < new Date() && m.trangThai === "Đang mượn";
-                            const isReturned = m.trangThai === "Đã trả";
-                            
-                            return `
-                                <tr class="group cursor-pointer hover:bg-slate-50/50 transition-all" onclick="${isReturned ? `showLoanDetail(${m.id})` : ''}">
+                        ${
+                          paginatedLoans.length > 0
+                            ? paginatedLoans
+                                .map((m) => {
+                                  const user = db.docGia.find(
+                                    (u) => u.id === m.docGiaId
+                                  );
+                                  const book = db.sach.find(
+                                    (s) => s.id === m.sachId
+                                  );
+                                  const isOverdue =
+                                    new Date(m.hanTra) < new Date() &&
+                                    m.trangThai === "Đang mượn";
+                                  const isReturned = m.trangThai === "Đã trả";
+
+                                  return `
+                                <tr class="group cursor-pointer hover:bg-slate-50/50 transition-all" onclick="${
+                                  isReturned ? `showLoanDetail(${m.id})` : ""
+                                }">
                                     <td class="py-5 pl-8 bg-white border-y border-l border-slate-50 rounded-l-3xl">
-                                        <div class="font-bold text-slate-800">${user?.hoTen || "N/A"}</div>
-                                        <div class="text-[10px] text-slate-400">ID: ${user?.id}</div>
+                                        <div class="font-bold text-slate-800">${
+                                          user?.hoTen || "N/A"
+                                        }</div>
+                                        <div class="text-[10px] text-slate-400">ID: ${
+                                          user?.id
+                                        }</div>
                                     </td>
                                     <td class="py-5 bg-white border-y border-slate-50">
-                                        <div class="font-bold text-slate-700">${book?.tieuDe || "N/A"}</div>
+                                        <div class="font-bold text-slate-700">${
+                                          book?.tieuDe || "N/A"
+                                        }</div>
                                     </td>
-                                    <td class="py-5 bg-white border-y border-slate-50 font-mono text-xs ${isOverdue ? "text-rose-500 font-black" : "text-slate-500"}">
+                                    <td class="py-5 bg-white border-y border-slate-50 font-mono text-xs ${
+                                      isOverdue
+                                        ? "text-rose-500 font-black"
+                                        : "text-slate-500"
+                                    }">
                                         ${m.hanTra}
                                     </td>
                                     <td class="py-5 bg-white border-y border-slate-50 text-center">
                                         <div class="flex flex-col items-center gap-1">
                                             <span class="px-4 py-1.5 rounded-full text-[9px] font-black uppercase border 
-                                                ${isReturned ? "bg-emerald-50 text-emerald-600 border-emerald-100" : "bg-orange-50 text-orange-600 border-orange-100"}">
+                                                ${
+                                                  isReturned
+                                                    ? "bg-emerald-50 text-emerald-600 border-emerald-100"
+                                                    : "bg-orange-50 text-orange-600 border-orange-100"
+                                                }">
                                                 ${m.trangThai}
                                             </span>
-                                            ${isReturned && m.ngayTraThucTe ? `<span class="text-[9px] font-bold text-slate-400 italic">Trả: ${m.ngayTraThucTe}</span>` : ""}
+                                            ${
+                                              isReturned && m.ngayTraThucTe
+                                                ? `<span class="text-[9px] font-bold text-slate-400 italic">Trả: ${m.ngayTraThucTe}</span>`
+                                                : ""
+                                            }
                                         </div>
                                     </td>
                                     <td class="py-5 pr-8 bg-white border-y border-r border-slate-50 rounded-r-3xl text-right" onclick="event.stopPropagation()">
-                                        ${!isReturned ? `
+                                        ${
+                                          !isReturned
+                                            ? `
                                             <button onclick="processReturn(${m.id})" class="px-4 py-2 bg-emerald-500 text-white rounded-xl text-[10px] font-black hover:bg-emerald-600 transition-all shadow-md shadow-emerald-100 uppercase">Trả sách</button>
-                                        ` : `
+                                        `
+                                            : `
                                             <button onclick="showLoanDetail(${m.id})" class="text-blue-500 text-[10px] font-black uppercase hover:underline">Chi tiết</button>
-                                        `}
+                                        `
+                                        }
                                     </td>
                                 </tr>`;
-                        }).join("") : `<tr><td colspan="5" class="py-20 text-center text-slate-400 font-bold italic">Không tìm thấy giao dịch nào phù hợp.</td></tr>`}
+                                })
+                                .join("")
+                            : `<tr><td colspan="5" class="py-20 text-center text-slate-400 font-bold italic">Không tìm thấy giao dịch nào phù hợp.</td></tr>`
+                        }
                     </tbody>
                 </table>
             </div>
@@ -118,7 +165,7 @@ function renderLoanModule(page = 1) {
             </div>
         </div>
     `;
-    document.getElementById("mainContent").innerHTML = html;
+  document.getElementById("mainContent").innerHTML = html;
 }
 
 function renderLoanPagination(current, total) {
@@ -270,8 +317,7 @@ function startQRScanner() {
         } catch (e) {
           // Not JSON, ignore
         }
-
-        // 2. Xử lý format cũ (USER:1, BOOK:5)
+        // 2. Xử lý mã đơn lẻ (ID Sách hoặc ID Độc giả)
         if (decodedText.startsWith("USER:")) {
           document.getElementById("loan-user-id").value =
             decodedText.split(":")[1];
@@ -336,7 +382,6 @@ function handleBatchScan(data) {
     "info"
   );
 
-  // Stop scanner temporarily to avoid re-scan
   if (html5QrCode) {
     html5QrCode.pause();
   }
@@ -371,7 +416,8 @@ function submitLoan() {
     hanTra: dueDate,
     trangThai: "Đang mượn",
   };
-
+  db.muonTra.unshift(newLoan);
+  localStorage.setItem("libData", JSON.stringify(db));
   db.muonTra.unshift(newLoan);
   book.soLuong -= 1;
   // 2. XÓA TRONG DATABASE (Dành cho Server/Dữ liệu tập trung)
@@ -379,9 +425,9 @@ function submitLoan() {
     user.gioHang = user.gioHang.filter((id) => String(id) !== String(bookId));
   }
   // ĐỒNG BỘ: Xóa khỏi localStorage nếu đang thao tác trên cùng trình duyệt
-  let cart = JSON.parse(localStorage.getItem("libra_cart")) || [];
+  let cart = JSON.parse(localStorage.getItem(`libra_cart_${userId}`)) || [];
   const newCart = cart.filter((id) => String(id) !== String(bookId));
-  localStorage.setItem("libra_cart", JSON.stringify(newCart));
+  localStorage.setItem(`libra_cart_${userId}`, JSON.stringify(newCart));
 
   updateLibData(db);
   logActivity(
@@ -409,7 +455,7 @@ function submitBatchLoan() {
   const dueDateStr = dueDate.toISOString().split("T")[0];
 
   let successCount = 0;
-  let cart = JSON.parse(localStorage.getItem("libra_cart")) || [];
+  let cart = JSON.parse(localStorage.getItem(`libra_cart_${userId}`)) || [];
 
   batchData.bookIds.forEach((bid) => {
     const book = db.sach.find((s) => s.id === parseInt(bid));
@@ -423,6 +469,8 @@ function submitBatchLoan() {
         trangThai: "Đang mượn",
       };
       db.muonTra.unshift(newLoan);
+      localStorage.setItem("libData", JSON.stringify(db));
+      db.muonTra.unshift(newLoan);
       book.soLuong -= 1;
 
       // Lọc bỏ sách vừa mượn khỏi mảng tạm của giỏ hàng
@@ -433,7 +481,9 @@ function submitBatchLoan() {
 
   if (successCount > 0) {
     // Cập nhật lại localStorage sau khi đã lọc hết các sách mượn thành công
-    localStorage.setItem("libra_cart", JSON.stringify(cart));
+    localStorage.setItem(`libra_cart_${userId}`, JSON.stringify(cart));
+    console.log("Mượn thành công");
+
     updateLibData(db);
     logActivity(
       "Mượn sách",
@@ -465,7 +515,6 @@ function closeLoanModal() {
 function searchInput(value) {
   currentSearchUser = value;
   console.log(value);
-  
 }
 function handleLoanSearch() {
   renderLoanModule(1);
@@ -477,85 +526,8 @@ function handleLoanFilter(value) {
   renderLoanModule(1);
 }
 
-function showLoanDetail(loanId) {
-  const db = getLibData();
-  const loan = db.muonTra.find((m) => m.id === loanId);
-  if (!loan) return;
-
-  const user = db.docGia.find((u) => u.id === loan.docGiaId);
-  const book = db.sach.find((s) => s.id === loan.sachId);
-
-  const detailHTML = `
-        <div id="loanDetailModal" class="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm animate-in zoom-in duration-300">
-            <div class="bg-white rounded-[3rem] p-10 w-full max-w-xl shadow-2xl border border-white">
-                <div class="flex justify-between items-center mb-8">
-                    <h3 class="text-2xl font-black text-slate-900 uppercase">Thông tin <span class="text-emerald-500">Phiếu Trả</span></h3>
-                    <button onclick="this.closest('#loanDetailModal').remove()" class="text-slate-400 hover:text-rose-500 transition-colors text-2xl">✕</button>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-100">
-                        <p class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-4">Người mượn</p>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center text-xl shadow-sm">👤</div>
-                            <div>
-                                <p class="font-black text-slate-800">${
-                                  user?.hoTen || "Không rõ"
-                                }</p>
-                                <p class="text-xs text-slate-400 font-medium">Email: ${
-                                  user?.email || "N/A"
-                                }</p>
-                                <p class="text-xs text-slate-400 font-medium">ID Độc giả: ${
-                                  user?.id
-                                }</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-100">
-                            <p class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-2">Sách mượn</p>
-                            <p class="font-bold text-slate-800">${
-                              book?.tieuDe || "N/A"
-                            }</p>
-                            <p class="text-[10px] text-slate-400 mt-1">ID Sách: ${
-                              book?.id
-                            }</p>
-                        </div>
-                        <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-100 text-center">
-                            <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-2">Trạng thái</p>
-                            <span class="px-3 py-1 bg-emerald-500 text-white rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-md shadow-emerald-100">Đã hoàn tất</span>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-900 p-6 rounded-[2rem] text-white shadow-xl shadow-slate-200">
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Ngày mượn:</span>
-                            <span class="font-mono text-sm">${
-                              loan.ngayMuon || "N/A"
-                            }</span>
-                        </div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Hạn trả:</span>
-                            <span class="font-mono text-sm">${
-                              loan.hanTra
-                            }</span>
-                        </div>
-                        <div class="flex justify-between items-center pt-2 border-t border-slate-800">
-                            <span class="text-[10px] font-black text-emerald-400 uppercase">Ngày trả thực tế:</span>
-                            <span class="font-mono font-black text-emerald-400 text-lg">${
-                              loan.ngayTraThucTe || "N/A"
-                            }</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-  document.body.insertAdjacentHTML("beforeend", detailHTML);
-}
 function clearSearchLoan() {
-    currentSearchUser = "";
-    document.getElementById('searchUserLoan').value = "";
-    renderLoanModule(1);
+  currentSearchUser = "";
+  document.getElementById("searchUserLoan").value = "";
+  renderLoanModule(1);
 }

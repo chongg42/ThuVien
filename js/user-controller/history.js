@@ -81,8 +81,8 @@ function renderUserHistory() {
                                     <div class="flex items-center gap-4">
                                         <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center group-hover:bg-blue-500 group-hover:text-white transition-all">📚</div>
                                         <div>
-                                            <p class="font-black text-slate-800">${book?.tieuDe || 'N/A'}</p>
-                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${book?.tacGia || 'N/A'}</p>
+                                            <p class="font-black text-slate-800">${book.tieuDe || 'N/A'}</p>
+                                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">${book.tacGia || 'N/A'}</p>
                                         </div>
                                     </div>
                                 </td>

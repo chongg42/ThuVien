@@ -54,7 +54,7 @@ function renderCatalog(page = 1, category = 'all', searchQuery = '') {
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                 ${paginatedBooks.length > 0 ? paginatedBooks.map(s => {
-        const catName = db.theLoai.find(t => t.id === s.theLoaiId)?.ten || "Khác";
+        const catName = db.theLoai.find(t => t.id === s.theLoaiId).ten || "Khác";
         return `
                     <div class="group bg-white p-8 rounded-[3.5rem] border border-white shadow-xl shadow-slate-200/30 hover:-translate-y-4 transition-all duration-500">
                         <div onclick="showBookDetail(${s.id})" class="cursor-pointer aspect-[3/4] bg-slate-50 rounded-[2.5rem] mb-6 flex items-center justify-center text-6xl group-hover:bg-orange-50 transition-all relative overflow-hidden">
@@ -106,7 +106,7 @@ function handleCatalogSearch(event, category) {
     renderCatalog(1, category, query);
 }
 
-// 3. Hàm hiển thị chi tiết sách (Đã sửa lỗi mất mô tả)
+// 3. Hàm hiển thị chi tiết sách 
 function showBookDetail(id) {
     const db = getLibData();
     const s = db.sach.find(item => item.id == id); // Dùng == để so sánh lỏng nếu id là string/number
@@ -131,7 +131,9 @@ function showBookDetail(id) {
                 <div class="flex-1 flex flex-col justify-center space-y-6">
                     <div>
                         <h2 class="text-4xl md:text-5xl font-black text-slate-900 leading-tight tracking-tighter">${s.tieuDe}</h2>
-                        <p class="text-slate-400 font-bold uppercase text-[11px] tracking-widest mt-2">${s.tacGia}</p>
+                        <p class="text-slate-400 font-bold uppercase text-[11px] tracking-widest mt-2">Tác giả: ${s.tacGia}</p>
+                        <p class="text-slate-400 font-bold uppercase text-[11px] tracking-widest mt-2">Nhà xuất bản: ${s.nhaXuatBan}</p>
+                        <p class="text-slate-400 font-bold uppercase text-[11px] tracking-widest mt-2"> - Năm xuất bản: ${s.namXuatBan}</p>
                     </div>
                     
                     <div class="space-y-2">
