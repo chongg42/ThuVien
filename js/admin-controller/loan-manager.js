@@ -418,7 +418,7 @@ function submitLoan() {
   };
   db.muonTra.unshift(newLoan);
   localStorage.setItem("libData", JSON.stringify(db));
-  db.muonTra.unshift(newLoan);
+
   book.soLuong -= 1;
   // 2. XÓA TRONG DATABASE (Dành cho Server/Dữ liệu tập trung)
   if (Array.isArray(user.gioHang)) {
@@ -470,7 +470,6 @@ function submitBatchLoan() {
       };
       db.muonTra.unshift(newLoan);
       localStorage.setItem("libData", JSON.stringify(db));
-      db.muonTra.unshift(newLoan);
       book.soLuong -= 1;
 
       // Lọc bỏ sách vừa mượn khỏi mảng tạm của giỏ hàng

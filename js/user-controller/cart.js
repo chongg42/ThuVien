@@ -30,6 +30,7 @@ const userId = getCurrentUserId();
 
 // 3. Hàm Xóa một cuốn sách khỏi giỏ
 function removeFromCart(bookId) {
+  const userId = getCurrentUserId();
   let cart = getCartItems();
   cart = cart.filter((id) => id !== bookId);
   localStorage.setItem(`libra_cart_${userId}`, JSON.stringify(cart));

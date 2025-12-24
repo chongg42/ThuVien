@@ -7,23 +7,31 @@ let currentCategoryFilter = 'all';
 function renderBooksModule(page = 1) {
   currentBookPage = page;
   const db = getLibData();
-  
+   let filteredBooks = db.sach
+        .filter(s => currentCategoryFilter === 'all' || s.theLoaiId == currentCategoryFilter)
+        .map(s => ({
+            ...s,
+            _score: fuzzyScore(s, currentSearchTerm) // 👉 CHẤM ĐIỂM
+        }))
+        .filter(s => currentSearchTerm ? s._score > 0 : true)
+        .sort((a, b) => b._score - a._score);
+
   // Lọc sách theo tìm kiếm và thể loại
-  let filteredBooks = db.sach;
+//   let filteredBooks = db.sach;
   
-  // Lọc theo thể loại
-  if (currentCategoryFilter !== 'all') {
-    filteredBooks = filteredBooks.filter(s => s.theLoaiId == currentCategoryFilter);
-  }
+//   // Lọc theo thể loại
+//   if (currentCategoryFilter !== 'all') {
+//     filteredBooks = filteredBooks.filter(s => s.theLoaiId == currentCategoryFilter);
+//   }
   
-  // Lọc theo từ khóa tìm kiếm
-  if (currentSearchTerm) {
-    const searchLower = currentSearchTerm.toLowerCase();
-    filteredBooks = filteredBooks.filter(s => 
-      s.tieuDe.toLowerCase().includes(searchLower) ||
-      s.tacGia.toLowerCase().includes(searchLower)
-    );
-  }
+//   // Lọc theo từ khóa tìm kiếm
+//   if (currentSearchTerm) {
+//     const searchLower = currentSearchTerm.toLowerCase();
+//     filteredBooks = filteredBooks.filter(s => 
+//       s.tieuDe.toLowerCase().includes(searchLower) ||
+//       s.tacGia.toLowerCase().includes(searchLower)
+//     );
+//   }
   
   const itemsPerPage = 5;
   const totalPages = Math.ceil(filteredBooks.length / itemsPerPage);
